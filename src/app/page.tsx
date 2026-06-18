@@ -1,6 +1,52 @@
+'use client';
+import { useWeather } from "@/hooks/useWeather";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [coordinates, setCoordinates] = useState<
+    { latitude: number, longitude: number } | undefined
+  >(undefined)
+
+  const {
+    cityInfo,
+    weatherInfo,
+    tenDayData,
+    hourlyData,
+    lifeIndex,
+    airQuality,
+    weatherProcessByGeo,
+    weatherProcessByCity,
+    setCityInfo,
+  } = useWeather()
+
+  useEffect(() => {
+    const success = (position: GeolocationPosition) => {
+      console.log('Got position', position)
+      setCoordinates({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      })
+    }
+
+    const error = () => {
+      console.warn('Unable to retrieve your location')
+      weatherProcessByCity('beijing')
+    }
+
+    if (!navigator.geolocation) {
+      weatherProcessByCity('beijing')
+    }
+    else {
+      navigator.geolocation.getCurrentPosition(success, error)
+    }
+  }, [weatherProcessByCity])
+
+  useEffect(() => {
+    if (!coordinates)
+      return
+    weatherProcessByGeo(coordinates.latitude, coordinates.longitude)
+  }, [coordinates, weatherProcessByGeo])
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
