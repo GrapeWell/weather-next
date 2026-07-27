@@ -10,7 +10,7 @@ import type {
   WeatherDailyItem,
   WeatherHourlyItem,
   WeatherLifeIndexItem,
-  WeatherNowNow,
+  WeatherNow,
 } from '@/api/weather/types'
 
 import { getAirQuality } from '@/api/airquality'
@@ -43,7 +43,7 @@ export function useWeather() {
     queryKey: ['weatherInfo', cityInfo.id],
     queryFn: () => getWeatherInfo(cityInfo.id),
     enabled: !!cityInfo.id,
-    select: (res): WeatherNowNow | null =>
+    select: (res): WeatherNow | null =>
       res.code === '200' ? res.now : null,
     staleTime: 5 * 60 * 1000,
     placeholderData: prev => prev,

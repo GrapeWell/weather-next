@@ -2,7 +2,7 @@
  * 实时天气（now）数据
  * 文档：https://dev.qweather.com/docs/api/weather/weather-now/
  */
-export interface WeatherNowNow {
+export interface WeatherNow {
   /** 数据观测时间 */
   obsTime: string
   /** 温度，默认单位：摄氏度 */
@@ -52,7 +52,7 @@ export interface WeatherNowResponse {
   /** 当前数据的响应式页面 */
   fxLink: string
   /** 实时天气信息 */
-  now: WeatherNowNow
+  now: WeatherNow
   /** 数据来源 */
   refer: WeatherRefer
 }
